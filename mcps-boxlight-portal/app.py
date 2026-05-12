@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 app.secret_key = "mcps-boxlight-secret"
 
-PORTAL_PASSWORD = "ChangeThisPassword123!"
+PORTAL_PASSWORD = "MCPS1234"
 
 DATA_FILE = os.path.join("data", "mcps_portal_data.json")
 
