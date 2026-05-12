@@ -84,9 +84,15 @@ button,
     display: inline-block;
 }
 
+.green-btn {
+    background: #198754;
+}
+
 button:hover,
 .view-btn:hover,
 .back-btn:hover { background: #1d4ed8; }
+
+.green-btn:hover { background: #157347; }
 
 .table-header {
     display: flex;
@@ -128,15 +134,30 @@ tbody tr:hover { background: rgba(255,255,255,0.04); }
 
 .mono { font-family: "Courier New", monospace; }
 
-.status-pill {
+.status-pill,
+.yes-pill,
+.no-pill {
     display: inline-block;
-    background: #14532d;
-    color: #bbf7d0;
     padding: 6px 12px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 700;
     white-space: nowrap;
+}
+
+.status-pill {
+    background: #14532d;
+    color: #bbf7d0;
+}
+
+.yes-pill {
+    background: #14532d;
+    color: #bbf7d0;
+}
+
+.no-pill {
+    background: #5b1d1d;
+    color: #fecaca;
 }
 
 .empty-state {
@@ -151,6 +172,13 @@ tbody tr:hover { background: rgba(255,255,255,0.04); }
 }
 
 .login-card h1 { margin-top: 0; }
+
+.detail-title-line {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
 
 .detail-header {
     display: flex;
