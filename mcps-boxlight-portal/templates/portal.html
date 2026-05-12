@@ -8,20 +8,13 @@
 
 <div class="topbar">
     <h1>MCPS Repair Status Portal</h1>
-
     <a href="{{ url_for('logout') }}">Logout</a>
 </div>
 
 <div class="container">
 
 <form method="get" class="search-box">
-    <input
-        type="text"
-        name="search"
-        value="{{ search }}"
-        placeholder="Search serial number, intake ID, or model"
-    >
-
+    <input type="text" name="search" value="{{ search }}" placeholder="Search serial number, intake ID, or model">
     <button type="submit">Search</button>
 </form>
 
@@ -34,4 +27,30 @@
                 <th>Serial Number</th>
                 <th>Status</th>
                 <th>Received</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for unit in units %}
+            <tr>
+                <td>{{ unit.get("intake_id", "") }}</td>
+                <td>{{ unit.get("model", "") }}</td>
+                <td>{{ unit.get("serial_number", "") }}</td>
+                <td>{{ unit.get("status", "") }}</td>
+                <td>{{ unit.get("date_received", "") }}</td>
+                <td>
+                    <a class="view-btn" href="{{ url_for('unit_detail', unit_id=unit.get('id', 0)) }}">
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+</body>
 </html>
