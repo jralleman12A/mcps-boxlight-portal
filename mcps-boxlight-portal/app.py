@@ -7,7 +7,8 @@ app.secret_key = "mcps-boxlight-secret"
 
 PORTAL_PASSWORD = "MCPS1234"
 
-DATA_FILE = os.path.join("data", "mcps_portal_data.json")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "data", "mcps_portal_data.json")
 
 
 def load_units():
