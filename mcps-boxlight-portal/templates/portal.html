@@ -7,48 +7,73 @@
 <body>
 
 <div class="topbar">
-    <h1>MCPS Repair Status Portal</h1>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div>
+        <h1>MCPS Repair Status Portal</h1>
+        <p>Boxlight repair tracking and return status</p>
+    </div>
+
+    <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
 </div>
 
 <div class="container">
 
-<form method="get" class="search-box">
-    <input type="text" name="search" value="{{ search }}" placeholder="Search serial number, intake ID, or model">
-    <button type="submit">Search</button>
-</form>
+    <div class="search-card">
+        <form method="get" class="search-box">
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search by serial number, intake ID, or model..."
+            >
 
-<div class="table-card">
-    <table>
-        <thead>
-            <tr>
-                <th>Intake ID</th>
-                <th>Model</th>
-                <th>Serial Number</th>
-                <th>Status</th>
-                <th>Received</th>
-                <th></th>
-            </tr>
-        </thead>
+            <button type="submit">Search</button>
+        </form>
+    </div>
 
-        <tbody>
-            {% for unit in units %}
-            <tr>
-                <td>{{ unit.get("intake_id", "") }}</td>
-                <td>{{ unit.get("model", "") }}</td>
-                <td>{{ unit.get("serial_number", "") }}</td>
-                <td>{{ unit.get("status", "") }}</td>
-                <td>{{ unit.get("date_received", "") }}</td>
-                <td>
-                    <a class="view-btn" href="{{ url_for('unit_detail', unit_id=unit.get('id', 0)) }}">
-                        View
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    <div class="table-card">
+        <div class="table-header">
+            <h2>Repair Records</h2>
+            <span>{{ units|length }} shown</span>
+        </div>
+
+        {% if units %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Intake ID</th>
+                    <th>Model</th>
+                    <th>Serial Number</th>
+                    <th>Status</th>
+                    <th>Received</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for unit in units %}
+                <tr>
+                    <td><strong>{{ unit.get("intake_id", "") }}</strong></td>
+                    <td>{{ unit.get("model", "") }}</td>
+                    <td class="mono">{{ unit.get("serial_number", "") }}</td>
+                    <td>
+                        <span class="status-pill">
+                            {{ unit.get("status", "") }}
+                        </span>
+                    </td>
+                    <td>{{ unit.get("date_received", "") }}</td>
+                    <td>
+                        <a class="view-btn" href="{{ url_for('unit_detail', unit_id=unit.get('id', 0)) }}">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="empty-state">No records found.</div>
+        {% endif %}
+    </div>
 
 </div>
 
