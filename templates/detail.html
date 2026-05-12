@@ -6,32 +6,86 @@
 </head>
 <body>
 
+<div class="topbar">
+    <div>
+        <h1>MCPS Repair Status Portal</h1>
+        <p>Boxlight repair tracking and return status</p>
+    </div>
+
+    <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+</div>
+
 <div class="container">
 
-<div class="detail-card">
+    <div class="detail-card">
 
-<h1>{{ unit.intake_id }}</h1>
+        <div class="detail-header">
+            <div>
+                <h1>{{ unit.get("intake_id", "") }}</h1>
+                <p>{{ unit.get("brand", "") }} {{ unit.get("model", "") }}</p>
+            </div>
 
-<div class="detail-grid">
-    <div>
-        <strong>Brand</strong>
-        <p>{{ unit.brand }}</p>
+            <div class="detail-actions">
+                <a class="back-btn" href="{{ url_for('portal') }}">Back to Portal</a>
+                <a class="view-btn" href="{{ url_for('packing_slip', unit_id=unit.get('id', 0)) }}">View Packing Slip</a>
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div>
+                <strong>Brand</strong>
+                <p>{{ unit.get("brand", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Model</strong>
+                <p>{{ unit.get("model", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Serial Number</strong>
+                <p class="mono">{{ unit.get("serial_number", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Screen Size</strong>
+                <p>{{ unit.get("screen_size", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Date Received</strong>
+                <p>{{ unit.get("date_received", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Status</strong>
+                <p><span class="status-pill">{{ unit.get("status", "") }}</span></p>
+            </div>
+
+            <div>
+                <strong>Shipped Back to MCPS</strong>
+                <p>{% if unit.get("shipped_back_mcps") %}Yes{% else %}No{% endif %}</p>
+            </div>
+
+            <div>
+                <strong>Shipped Back Date</strong>
+                <p>{{ unit.get("shipped_back_date", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Last Updated</strong>
+                <p>{{ unit.get("updated_at", "") }}</p>
+            </div>
+        </div>
+
+        <div class="final-box">
+            <strong>Final Outcome</strong>
+            <p>{{ unit.get("final_outcome", "") or "No final outcome has been entered yet." }}</p>
+        </div>
+
     </div>
 
-    <div>
-        <strong>Model</strong>
-        <p>{{ unit.model }}</p>
-    </div>
+</div>
 
-    <div>
-        <strong>Serial Number</strong>
-        <p>{{ unit.serial_number }}</p>
-    </div>
-
-    <div>
-        <strong>Status</strong>
-        <p>{{ unit.status }}</p>
-    </div>
-
-    <div>
+</body>
 </html>
