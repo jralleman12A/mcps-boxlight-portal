@@ -8,10 +8,16 @@
 
 <div class="login-card">
     <h1>MCPS Boxlight Portal</h1>
+    <p style="color:#cbd5e1;">Enter the portal password to continue.</p>
+
+    {% if error %}
+        <div style="background:#7f1d1d;color:#fecaca;padding:12px;border-radius:10px;margin-bottom:16px;">
+            {{ error }}
+        </div>
+    {% endif %}
 
     <form method="post">
-        <input type="password" name="password" placeholder="Portal Password" required>
-
+        <input type="password" name="password" placeholder="Portal Password" required autofocus>
         <button type="submit">Login</button>
     </form>
 </div>
