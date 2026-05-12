@@ -106,53 +106,6 @@ body {
     font-size: 11px;
 }
 
-.label-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-top: 2px dashed #ccc;
-}
-
-.label-block {
-    padding: 14px 16px;
-    overflow: hidden;
-}
-
-.label-block:first-child {
-    border-right: 2px dashed #ccc;
-}
-
-.label-title {
-    font-size: 10px;
-    color: #888;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-}
-
-.label-main {
-    font-family: "Courier New", monospace;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 6px;
-}
-
-.barcode-holder {
-    width: 100%;
-    height: 55px;
-    overflow: hidden;
-}
-
-.barcode-holder svg {
-    max-width: 100%;
-    height: 52px;
-    display: block;
-}
-
-.barcode-text {
-    font-size: 10px;
-    color: #666;
-    margin-top: 4px;
-}
-
 .footer {
     border-top: 1px solid #eee;
     padding: 9px 18px;
@@ -178,7 +131,7 @@ body {
 </div>
 
 {% set box_id = "BOX-" ~ unit.get("intake_id", "") %}
-{% set date_out = unit.get("shipped_back_date", "") or today %}
+{% set date_out = unit.get("shipped_back_date", "") or unit.get("delivery_date", "") or today %}
 {% set unit_url = url_for('unit_detail', unit_id=unit.get('id', 0), _external=True) %}
 
 <div class="slip">
@@ -196,7 +149,8 @@ body {
             <div class="field-row"><div class="field-label">Model</div><div class="field-value">{{ unit.get("model", "") }}</div></div>
             <div class="field-row"><div class="field-label">Screen Size</div><div class="field-value">{{ unit.get("screen_size", "") }}</div></div>
             <div class="field-row"><div class="field-label">Date in</div><div class="field-value">{{ unit.get("date_received", "") }}</div></div>
-            <div class="field-row"><div class="field-label">Date out</div><div class="field-value">{{ date_out }}</div></div>
+            <div class="field-row"><div class="field-label">Repaired</div><div class="field-value">{{ unit.get("repaired_date", "") }}</div></div>
+            <div class="field-row"><div class="field-label">Delivery</div><div class="field-value">{{ unit.get("delivery_date", "") }}</div></div>
             <div class="field-row"><div class="field-label">Status</div><div><span class="status-badge">{{ unit.get("status", "") }}</span></div></div>
         </div>
 
@@ -206,74 +160,12 @@ body {
         </div>
     </div>
 
-    <div class="label-section">
-        <div class="label-block">
-            <div class="label-title">Unit Label — Apply to Unit</div>
-            <div class="label-main">{{ unit.get("serial_number", "") }}</div>
-            <div class="barcode-holder" id="unitBarcode"></div>
-            <div class="barcode-text">Serial: {{ unit.get("serial_number", "") }}</div>
-        </div>
-
-        <div class="label-block">
-            <div class="label-title">Box Label — Apply to Box</div>
-            <div class="label-main">{{ box_id }}</div>
-            <div class="barcode-holder" id="boxBarcode"></div>
-            <div class="barcode-text">Job: {{ unit.get("intake_id", "") }}</div>
-        </div>
-    </div>
-
     <div class="footer">
-        <span>Please apply both labels before storing or shipping this unit.</span>
-        <span>Shipped: {{ date_out }}</span>
+        <span>Public customer copy. Internal service details are not included.</span>
+        <span>Date out: {{ date_out }}</span>
     </div>
 
 </div>
-
-<script>
-const CODE39 = {
-    "0":"101001101101", "1":"110100101011", "2":"101100101011", "3":"110110010101",
-    "4":"101001101011", "5":"110100110101", "6":"101100110101", "7":"101001011011",
-    "8":"110100101101", "9":"101100101101", "A":"110101001011", "B":"101101001011",
-    "C":"110110100101", "D":"101011001011", "E":"110101100101", "F":"101101100101",
-    "G":"101010011011", "H":"110101001101", "I":"101101001101", "J":"101011001101",
-    "K":"110101010011", "L":"101101010011", "M":"110110101001", "N":"101011010011",
-    "O":"110101101001", "P":"101101101001", "Q":"101010110011", "R":"110101011001",
-    "S":"101101011001", "T":"101011011001", "U":"110010101011", "V":"100110101011",
-    "W":"110011010101", "X":"100101101011", "Y":"110010110101", "Z":"100110110101",
-    "-":"100101011011", ".":"110010101101", " ":"100110101101", "$":"100100100101",
-    "/":"100100101001", "+":"100101001001", "%":"101001001001", "*":"100101101101"
-};
-
-function drawCode39(containerId, value) {
-    const container = document.getElementById(containerId);
-    const text = "*" + String(value || "").toUpperCase() + "*";
-
-    let x = 0;
-    const narrow = 1.4;
-    const wide = 3.4;
-    const height = 48;
-    let bars = "";
-
-    for (const ch of text) {
-        const pattern = CODE39[ch];
-        if (!pattern) continue;
-
-        for (let i = 0; i < pattern.length; i++) {
-            const w = pattern[i] === "1" ? wide : narrow;
-            if (i % 2 === 0) {
-                bars += `<rect x="${x}" y="0" width="${w}" height="${height}" fill="black"></rect>`;
-            }
-            x += w;
-        }
-        x += narrow;
-    }
-
-    container.innerHTML = `<svg viewBox="0 0 ${x} ${height}" preserveAspectRatio="xMinYMid meet">${bars}</svg>`;
-}
-
-drawCode39("unitBarcode", "{{ unit.get('serial_number', '') }}");
-drawCode39("boxBarcode", "{{ box_id }}");
-</script>
 
 </body>
 </html>

@@ -23,9 +23,8 @@
                 type="text"
                 name="search"
                 value="{{ search }}"
-                placeholder="Search by serial number, intake ID, or model..."
+                placeholder="Search by serial number, intake ID, model, or status..."
             >
-
             <button type="submit">Search</button>
         </form>
     </div>
@@ -44,7 +43,9 @@
                     <th>Model</th>
                     <th>Serial Number</th>
                     <th>Status</th>
-                    <th>Received</th>
+                    <th>Repaired</th>
+                    <th>Delivery</th>
+                    <th>Slip</th>
                     <th></th>
                 </tr>
             </thead>
@@ -55,12 +56,16 @@
                     <td><strong>{{ unit.get("intake_id", "") }}</strong></td>
                     <td>{{ unit.get("model", "") }}</td>
                     <td class="mono">{{ unit.get("serial_number", "") }}</td>
+                    <td><span class="status-pill">{{ unit.get("status", "") }}</span></td>
+                    <td>{{ unit.get("repaired_date", "") }}</td>
+                    <td>{{ unit.get("delivery_date", "") }}</td>
                     <td>
-                        <span class="status-pill">
-                            {{ unit.get("status", "") }}
-                        </span>
+                        {% if unit.get("checkoff_file") %}
+                            <span class="yes-pill">On File</span>
+                        {% else %}
+                            <span class="no-pill">Missing</span>
+                        {% endif %}
                     </td>
-                    <td>{{ unit.get("date_received", "") }}</td>
                     <td>
                         <a class="view-btn" href="{{ url_for('unit_detail', unit_id=unit.get('id', 0)) }}">
                             View

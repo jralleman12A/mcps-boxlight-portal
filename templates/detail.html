@@ -21,13 +21,24 @@
 
         <div class="detail-header">
             <div>
-                <h1>{{ unit.get("intake_id", "") }}</h1>
+                <div class="detail-title-line">
+                    <h1>{{ unit.get("intake_id", "") }}</h1>
+                    <span class="status-pill">{{ unit.get("status", "") }}</span>
+                </div>
                 <p>{{ unit.get("brand", "") }} {{ unit.get("model", "") }}</p>
             </div>
 
             <div class="detail-actions">
                 <a class="back-btn" href="{{ url_for('portal') }}">Back to Portal</a>
                 <a class="view-btn" href="{{ url_for('packing_slip', unit_id=unit.get('id', 0)) }}">View Packing Slip</a>
+
+                {% if unit.get("checkoff_file") %}
+                    <a class="view-btn green-btn"
+                       target="_blank"
+                       href="{{ url_for('static', filename='checkoffs/' + unit.get('checkoff_file')) }}">
+                        View Check-Off Slip
+                    </a>
+                {% endif %}
             </div>
         </div>
 
@@ -58,18 +69,29 @@
             </div>
 
             <div>
-                <strong>Status</strong>
-                <p><span class="status-pill">{{ unit.get("status", "") }}</span></p>
+                <strong>Repaired Date</strong>
+                <p>{{ unit.get("repaired_date", "") }}</p>
             </div>
 
             <div>
-                <strong>Shipped Back to MCPS</strong>
-                <p>{% if unit.get("shipped_back_mcps") %}Yes{% else %}No{% endif %}</p>
+                <strong>Delivery Date</strong>
+                <p>{{ unit.get("delivery_date", "") }}</p>
             </div>
 
             <div>
                 <strong>Shipped Back Date</strong>
                 <p>{{ unit.get("shipped_back_date", "") }}</p>
+            </div>
+
+            <div>
+                <strong>Tech Check-Off Slip</strong>
+                <p>
+                    {% if unit.get("checkoff_file") %}
+                        On File
+                    {% else %}
+                        Not Uploaded
+                    {% endif %}
+                </p>
             </div>
 
             <div>
